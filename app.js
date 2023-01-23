@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const port = 3030;
 
-app.use(express.static(path.resolve(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, 'views', 'home.html')));
-app.get('/about', (req, res) => res.sendFile(path.resolve(__dirname, 'views', 'about.html')));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-app.listen(3000, ()=>{
-    console.log('Servidor funcionando');
-    });
-    
+const mainRouter = require('./routers/main');
+app.use('/', mainRouter);
+
+app.listen(port, () => console.log(`Server running in http://localhost:${port}`));
